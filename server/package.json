@@ -6,6 +6,7 @@
     "dev": "nodemon",
     "build": "tsc -p tsconfig.json",
     "start": "node ./dist/main.js",
+    "clean": "rimraf dist",
     "lint": "eslint 'src/**/*.{ts,tsx}' --fix"
   },
   "type": "module",
@@ -32,6 +33,7 @@
     "@typescript-eslint/parser": "^8.40.0",
     "eslint": "^9.34.0",
     "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
