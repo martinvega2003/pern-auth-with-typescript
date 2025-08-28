@@ -41,9 +41,9 @@ const Button: React.FC<ButtonProps> = ({
 
   const gradientDefault = gradientFrom && gradientTo
     ? `bg-gradient-to-r ${gradientFrom} ${gradientTo}`
-    : 'bg-gradient-to-r from-blue-400 to-purple-500 dark:from-gray-700 dark:to-gray-900';
+    : 'bg-gradient-to-r from-blue-400 to-purple-500 dark:from-gray-700 dark:to-gray-900 btn-gradient-anim';
 
-  const gradientStyles = `${baseStyles} ${gradientDefault} ${textColorStyle} border-none`;
+  const gradientStyles = `${baseStyles} ${gradientDefault} ${textColorStyle} border-none btn-gradient-anim`;
 
   const glassDefault = glassBgColor
   ? glassBgColor
