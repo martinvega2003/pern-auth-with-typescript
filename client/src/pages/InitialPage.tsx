@@ -1,8 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
 
 const InitialPage: React.FC = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className='bg-zinc-200 dark:bg-gray-800 w-screen h-screen flex justify-center items-center'>
       <div 
@@ -17,15 +20,11 @@ const InitialPage: React.FC = () => {
         <p className='text-sm sm:text-md md:text-lg mb-8 text-gray-600 dark:text-gray-400'>
           Create an Account or Login if you have one
         </p>
-        <Button variant='filled' className='mb-4 w-full sm:w-3/4 py-4'>
-          <Link to='/register'>
-            Register
-          </Link>
+        <Button onClick={() => navigate('/register')} variant='filled' className='mb-4 w-full sm:w-3/4 py-4 rounded-full'>
+          Register
         </Button>
-        <Button variant='outlined' className='w-full sm:w-3/4 py-4'>
-          <Link to='/login'>
-            Login
-          </Link>
+        <Button onClick={() => navigate('/login')} variant='outlined' className='w-full sm:w-3/4 py-4 rounded-full'>
+          Login
         </Button>
       </div>
     </div>
