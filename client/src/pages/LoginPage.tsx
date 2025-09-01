@@ -1,10 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
 
 const LoginPage: React.FC = () => {
 
+  interface LoginData {
+    email: string;
+    password: string;
+  }
+
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: '',
+    password: '',
+  });
+
   const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value
+    });
+  }
+  
+  const handleSubmit = () => {
+    // Basic validation
+    if (!loginData.email || !loginData.password) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    alert(JSON.stringify(loginData, null, 2));
+    setLoginData({
+      email: '',
+      password: '',
+    });
+    navigate('/');
+  }
 
   return (
     <div className='w-screen h-fit lg:h-screen flex justify-center items-center'>
@@ -24,18 +56,24 @@ const LoginPage: React.FC = () => {
 
         <input 
           type="email" 
+          name='email'
           placeholder='Email'
+          onChange={handleChange}
+          value={loginData.email}
           className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-green-600 dark:border-green-200 rounded-full outline-0" 
         />
 
         <input 
           type="password" 
+          name='password'
           placeholder='Password'
+          onChange={handleChange}
+          value={loginData.password}
           className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-green-600 dark:border-green-200 rounded-full outline-0" 
         />
 
         <Button 
-          onClick={() => alert('Register functionality not implemented yet')} 
+          onClick={handleSubmit} 
           variant='gradient' 
           textColor='text-white'
           gradientFrom='from-green-300 dark:from-green-500' 

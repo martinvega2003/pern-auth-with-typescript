@@ -1,10 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
 
 const RegisterPage: React.FC = () => {
 
+  interface RegisterData {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }
+
+  const [registerData, setRegisterData] = useState<RegisterData>({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
   const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterData({
+      ...registerData,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleSubmit = () => {
+    // Basic validation
+    if (!registerData.username || !registerData.email || !registerData.password || !registerData.confirmPassword) {
+      alert('Please fill in all fields');
+      return;
+    }
+    if (registerData.password !== registerData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    alert(JSON.stringify(registerData, null, 2));
+    setRegisterData({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+    navigate('/login');
+  }
 
   return (
     <div className='w-screen h-fit lg:h-screen flex justify-center items-center'>
@@ -24,30 +65,42 @@ const RegisterPage: React.FC = () => {
 
         <input 
           type="text" 
+          name='username'
           placeholder='Username'
+          onChange={handleChange}
+          value={registerData.username}
           className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
 
         <input 
           type="email" 
+          name='email'
           placeholder='Email'
+          onChange={handleChange}
+          value={registerData.email}
           className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
 
         <input 
           type="password" 
+          name='password'
           placeholder='Password'
+          onChange={handleChange}
+          value={registerData.password}
           className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
 
         <input 
           type="password" 
+          name='confirmPassword'
           placeholder='Confirm Password'
+          onChange={handleChange}
+          value={registerData.confirmPassword}
           className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
 
         <Button 
-          onClick={() => alert('Register functionality not implemented yet')} 
+          onClick={handleSubmit} 
           variant='gradient' 
           textColor='text-white'
           gradientFrom='from-cyan-300 dark:from-cyan-500' 
