@@ -6,7 +6,7 @@ const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav className="fixed p-4 bg-gray-200 dark:bg-gray-800 flex justify-between border-b border-gray-300 dark:border-gray-700 w-full">
+    <nav className="fixed top-0 h-16 p-4 bg-gray-200 dark:bg-gray-800 flex justify-between border-b border-gray-300 dark:border-gray-700 w-full">
       <span className="text-xl dark:text-white">My App</span>
       <button
         onClick={toggleTheme}
