@@ -7,8 +7,14 @@
   100% { background-position: 0% 50%; }
 }
 
-* {
-  transition: background-color 0.5s;
+/* Apply transitions only during theme switch */
+html.theme-transition * {
+  transition: background-color 0.5s, color 0.5s, border-color 0.5s !important;
+}
+
+/* Prevent child duplication */
+html.theme-transition .no-color-transition * {
+  transition-duration: 0s !important;
 }
 
 body {
