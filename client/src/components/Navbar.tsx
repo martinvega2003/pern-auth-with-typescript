@@ -1,19 +1,40 @@
 import React from "react";
 import { useTheme } from "../context/ThemeModeContext";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaMoon, FaSun, FaHome } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 h-16 p-4 bg-gray-200 dark:bg-gray-800 flex justify-between border-b border-gray-300 dark:border-gray-700 w-full">
-      <span className="text-xl dark:text-white">My App</span>
-      <button
-        onClick={toggleTheme}
-        className="bg-gray-300 dark:bg-gray-600 dark:text-white px-3 py-1 rounded-md cursor-pointer"
-      >
-        {theme === "light" ? <p className="flex justify-start items-center gap-2"><FaMoon /> Dark</p> : <p className="flex justify-start items-center gap-2"><FaSun /> Light</p>}
-      </button>
+      <span 
+        onClick={() => navigate('/')} 
+        className="text-xl hover:text-cyan-800 dark:text-white dark:hover:text-cyan-200 flex justify-center items-center gap-2 cursor-pointer transition duration-300">
+          <div className="no-color-transition">
+            <FaHome />
+          </div> Home
+      </span>
+      {theme !== "light" ? (
+        <button
+          onClick={toggleTheme}
+          className="bg-gray-600 text-white hover:text-yellow-300 px-3 py-1 flex justify-start items-center gap-2 rounded-md transition duration-300 cursor-pointer"
+        >
+          <div className="no-color-transition">
+            <FaSun className="no-color-transition" />
+          </div> Light
+        </button>
+      ) : (
+        <button
+          onClick={toggleTheme}
+          className="bg-gray-300 hover:text-blue-800 px-3 py-1 flex justify-start items-center gap-2 rounded-md transition duration-300 cursor-pointer"
+        >
+          <div className="no-color-transition">
+            <FaMoon className="no-color-transition" />
+          </div> Dark
+        </button>
+      )}
     </nav>
   );
 }
