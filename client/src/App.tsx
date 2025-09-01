@@ -2,8 +2,10 @@ import { ThemeProvider } from './context/ThemeModeContext'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // Pages and Components
-import InitialPage from './pages/InitialPage'
 import Navbar from './components/Navbar'
+import InitialPage from './pages/InitialPage'
+import RegisterPage from './pages/RegisterPage'
+import LoginPage from './pages/LoginPage'
 
 function App() {
 
@@ -12,8 +14,11 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+
+          {/* Initial And Auth Related Pages */ }
           <Route path='/' element={<InitialPage />} />
-          <Route path='/about' element={<div>About</div>} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='/login' element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </ ThemeProvider>
