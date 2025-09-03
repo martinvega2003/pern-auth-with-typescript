@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
+import { registerSchema } from '../schemas/auth.schemas';
 
 const RegisterPage: React.FC = () => {
 
@@ -18,6 +19,9 @@ const RegisterPage: React.FC = () => {
     confirmPassword: ''
   });
 
+  type RegisterErrors = Partial<Record<keyof RegisterData, string>>
+  const [errors, setErrors] = useState<RegisterErrors>({});
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,15 +32,19 @@ const RegisterPage: React.FC = () => {
   }
 
   const handleSubmit = () => {
-    // Basic validation
-    if (!registerData.username || !registerData.email || !registerData.password || !registerData.confirmPassword) {
-      alert('Please fill in all fields');
+
+    // Validate using Zod schema
+    const result = registerSchema.safeParse(registerData);
+    if (!result.success) {
+      const error: Record<string, string> = {};
+      result.error.issues.forEach(err => {
+        error[(err.path[0] as string) || "_"] = err.message;
+      });
+      setErrors(error);
       return;
     }
-    if (registerData.password !== registerData.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
+    setErrors({});
+
     alert(JSON.stringify(registerData, null, 2));
     setRegisterData({
       username: '',
@@ -69,8 +77,10 @@ const RegisterPage: React.FC = () => {
           placeholder='Username'
           onChange={handleChange}
           value={registerData.username}
-          className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
+          className="w-full px-4 sm:px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
+
+        {errors.username && <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.username}</p>}
 
         <input 
           type="email" 
@@ -78,8 +88,10 @@ const RegisterPage: React.FC = () => {
           placeholder='Email'
           onChange={handleChange}
           value={registerData.email}
-          className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
+          className="w-full px-4 sm:px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
+
+        {errors.username ? null : errors.email ? <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.email}</p> : null}
 
         <input 
           type="password" 
@@ -87,8 +99,10 @@ const RegisterPage: React.FC = () => {
           placeholder='Password'
           onChange={handleChange}
           value={registerData.password}
-          className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
+          className="w-full px-4 sm:px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
+
+        {errors.username || errors.email ? null : errors.password ? <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.password}</p> : null}
 
         <input 
           type="password" 
@@ -96,8 +110,10 @@ const RegisterPage: React.FC = () => {
           placeholder='Confirm Password'
           onChange={handleChange}
           value={registerData.confirmPassword}
-          className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
+          className="w-full px-4 sm:px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-cyan-800 dark:border-cyan-200 rounded-full outline-0" 
         />
+
+        {errors.username || errors.email || errors.password ? null : errors.confirmPassword ? <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.confirmPassword}</p> : null}
 
         <Button 
           onClick={handleSubmit} 

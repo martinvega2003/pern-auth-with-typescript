@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
+import { loginSchema } from '../schemas/auth.schemas';
 
 const LoginPage: React.FC = () => {
 
@@ -14,6 +15,9 @@ const LoginPage: React.FC = () => {
     password: '',
   });
 
+  type LoginErrors = Partial<Record<keyof LoginData, string>>
+  const [errors, setErrors] = useState<LoginErrors>({});
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,11 +28,18 @@ const LoginPage: React.FC = () => {
   }
   
   const handleSubmit = () => {
-    // Basic validation
-    if (!loginData.email || !loginData.password) {
-      alert('Please fill in all fields');
+    
+    // Validate using Zod schema
+    const result = loginSchema.safeParse(loginData);
+    if (!result.success) {
+      const error: Record<string, string> = {};
+      result.error.issues.forEach(err => {
+        error[(err.path[0] as string) || "_"] = err.message;
+      });
+      setErrors(error);
       return;
     }
+    setErrors({});    
 
     alert(JSON.stringify(loginData, null, 2));
     setLoginData({
@@ -60,8 +71,10 @@ const LoginPage: React.FC = () => {
           placeholder='Email'
           onChange={handleChange}
           value={loginData.email}
-          className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-green-600 dark:border-green-200 rounded-full outline-0" 
+          className="w-full px-4 sm:px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-green-600 dark:border-green-200 rounded-full outline-0" 
         />
+
+        {errors.email && <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.email}</p>}
 
         <input 
           type="password" 
@@ -69,8 +82,10 @@ const LoginPage: React.FC = () => {
           placeholder='Password'
           onChange={handleChange}
           value={loginData.password}
-          className="w-full px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-green-600 dark:border-green-200 rounded-full outline-0" 
+          className="w-full px-4 sm:px-8 py-4 mb-4 dark:text-white text-sm sm:text-md md:text-lg placeholder:text-gray-400 border border-green-600 dark:border-green-200 rounded-full outline-0" 
         />
+
+        {errors.email ? null : errors.password ? <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.password}</p> : null}
 
         <Button 
           onClick={handleSubmit} 
