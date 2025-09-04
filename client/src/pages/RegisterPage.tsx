@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
 import { registerSchema } from '../schemas/auth.schemas';
+import api from '../api/api';
 
 const RegisterPage: React.FC = () => {
 
@@ -31,7 +32,7 @@ const RegisterPage: React.FC = () => {
     });
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
 
     // Validate using Zod schema
     const result = registerSchema.safeParse(registerData);
@@ -45,14 +46,25 @@ const RegisterPage: React.FC = () => {
     }
     setErrors({});
 
-    alert(JSON.stringify(registerData, null, 2));
-    setRegisterData({
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
-    navigate('/login');
+    try {
+      await api.post("/auth/register/", {
+        username: registerData.username,
+        email: registerData.email,
+        password: registerData.password
+      });
+      setRegisterData({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
+      navigate('/login');
+    } catch (error) {
+      error instanceof Error
+        ? alert(error.message)
+        : alert("An unexpected error occurred");
+      console.error("Registration error:", error);
+    }
   }
 
   return (
