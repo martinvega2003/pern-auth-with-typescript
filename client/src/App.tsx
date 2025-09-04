@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Contexts
 import { ThemeProvider } from './context/ThemeModeContext'
+import { AuthProvider } from './context/AuthContext'
 
 // Pages and Components
 import Navbar from './components/Navbar'
@@ -15,19 +16,21 @@ import LoginPage from './pages/LoginPage'
 function App() {
 
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <ToastContainer position="top-right" autoClose={3000} />
-        <Navbar />
-        <Routes>
+    <AuthProvider>
+      <ThemeProvider>
+        <BrowserRouter>
+          <ToastContainer position="top-right" autoClose={3000} />
+          <Navbar />
+          <Routes>
 
-          {/* Initial And Auth Related Pages */ }
-          <Route path='/' element={<InitialPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-        </Routes>
-      </BrowserRouter>
-    </ ThemeProvider>
+            {/* Initial And Auth Related Pages */ }
+            <Route path='/' element={<InitialPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+          </Routes>
+        </BrowserRouter>
+      </ ThemeProvider>
+    </AuthProvider>
   )
 }
 
