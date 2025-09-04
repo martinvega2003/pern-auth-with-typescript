@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
 import { loginSchema } from '../schemas/auth.schemas';
+import api from '../api/api';
 
 const LoginPage: React.FC = () => {
 
@@ -27,7 +28,7 @@ const LoginPage: React.FC = () => {
     });
   }
   
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     
     // Validate using Zod schema
     const result = loginSchema.safeParse(loginData);
@@ -41,12 +42,22 @@ const LoginPage: React.FC = () => {
     }
     setErrors({});    
 
-    alert(JSON.stringify(loginData, null, 2));
-    setLoginData({
-      email: '',
-      password: '',
-    });
-    navigate('/');
+    try {
+      await api.post("/auth/login/", {
+        email: loginData.email,
+        password: loginData.password
+      });
+      setLoginData({
+        email: '',
+        password: '',
+      });
+      navigate('/');
+    } catch (error) {
+      error instanceof Error
+        ? alert(error.message)
+        : alert("An unexpected error occurred");
+      console.error("Registration error:", error);
+    }
   }
 
   return (
