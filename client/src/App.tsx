@@ -1,5 +1,10 @@
-import { ThemeProvider } from './context/ThemeModeContext'
+// Libraries`
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// Contexts
+import { ThemeProvider } from './context/ThemeModeContext'
 
 // Pages and Components
 import Navbar from './components/Navbar'
@@ -12,6 +17,7 @@ function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <ToastContainer position="top-right" autoClose={3000} />
         <Navbar />
         <Routes>
 
