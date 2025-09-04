@@ -12,10 +12,11 @@ import Navbar from './components/Navbar'
 import InitialPage from './pages/InitialPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
+import Auth from './pages/Auth';
 
 // Routes
 import ProtectedRoute from './components/ProtectedRoute';
-import Auth from './pages/Auth';
+import PublicRoute from './components/PublicRoute';
 
 function App() {
 
@@ -27,10 +28,42 @@ function App() {
           <Navbar />
           <Routes>
 
-            {/* Initial And Auth Related Pages */ }
-            <Route path='/' element={<InitialPage />} />
-            <Route path='/register' element={<RegisterPage />} />
-            <Route path='/login' element={<LoginPage />} />
+            {/* Initial And Auth Related Public Pages */ }
+
+            {/*<PublicRoute>
+              <Routes>
+                <Route path='/' element={<InitialPage />} />
+                <Route path='/register' element={<RegisterPage />} />
+                <Route path='/login' element={<LoginPage />} />
+              </Routes>
+            </PublicRoute> */}
+
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <InitialPage />
+                </PublicRoute>
+              }
+            />
+
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <RegisterPage />
+                </PublicRoute>
+              }
+            />
+
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <LoginPage />
+                </PublicRoute>
+              }
+            />
 
             {/* Protected Routes */ }
             <Route
