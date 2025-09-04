@@ -13,6 +13,10 @@ import InitialPage from './pages/InitialPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 
+// Routes
+import ProtectedRoute from './components/ProtectedRoute';
+import Auth from './pages/Auth';
+
 function App() {
 
   return (
@@ -27,6 +31,16 @@ function App() {
             <Route path='/' element={<InitialPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/login' element={<LoginPage />} />
+
+            {/* Protected Routes */ }
+            <Route
+              path="/auth"
+              element={
+                <ProtectedRoute>
+                  <Auth />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </ ThemeProvider>
