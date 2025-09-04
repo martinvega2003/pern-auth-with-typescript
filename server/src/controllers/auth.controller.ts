@@ -20,7 +20,9 @@ export const register = async (req: Request, res: Response) => {
     // createUser should return a PublicUser (without password)
     const user: PublicUser = await createUser(username, email, pwdHash);
 
-    return res.status(201).json({ user });
+    const token = signJwt({ sub: String(user.id), email: user.email });
+
+    return res.status(201).json({ token, user });
   } catch (err: any) {
     console.error('Register error:', err);
     // Example: Postgres unique_violation code 23505 -> return 409
