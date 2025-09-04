@@ -5,6 +5,7 @@ import { loginSchema } from '../schemas/auth.schemas';
 import api from '../api/api';
 import axios from 'axios';
 import { notifySuccess, notifyError } from '../utils/toast';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage: React.FC = () => {
 
@@ -22,6 +23,9 @@ const LoginPage: React.FC = () => {
   const [errors, setErrors] = useState<LoginErrors>({});
 
   const navigate = useNavigate();
+
+  // Get login function from AuthContext
+  const { login } = useAuth()!;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({
@@ -45,7 +49,7 @@ const LoginPage: React.FC = () => {
     setErrors({});    
 
     try {
-      await api.post("/auth/login/", {
+      const response = await api.post("/auth/login/", {
         email: loginData.email,
         password: loginData.password
       });
@@ -53,8 +57,13 @@ const LoginPage: React.FC = () => {
         email: '',
         password: '',
       });
+
+      // On successful login, get token and user from response
+      const { token, user } = response.data;
+      login(token, user); // Update context and localStorage
+
       notifySuccess("Successfully logged in");
-      navigate('/');
+      navigate('/auth');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // if backend sent a response (e.g., 400 or 401)

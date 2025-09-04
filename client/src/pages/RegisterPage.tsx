@@ -5,6 +5,7 @@ import { registerSchema } from '../schemas/auth.schemas';
 import api from '../api/api';
 import axios from 'axios';
 import { notifySuccess, notifyError } from '../utils/toast';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterPage: React.FC = () => {
 
@@ -26,6 +27,9 @@ const RegisterPage: React.FC = () => {
   const [errors, setErrors] = useState<RegisterErrors>({});
 
   const navigate = useNavigate();
+
+  // Get login function from AuthContext
+  const { login } = useAuth()!;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRegisterData({
@@ -49,7 +53,7 @@ const RegisterPage: React.FC = () => {
     setErrors({});
 
     try {
-      await api.post("/auth/register/", {
+      const response = await api.post("/auth/register/", {
         username: registerData.username,
         email: registerData.email,
         password: registerData.password
@@ -60,8 +64,13 @@ const RegisterPage: React.FC = () => {
         password: '',
         confirmPassword: '',
       });
+
+      // On successful registration, get token and user from response
+      const { token, user } = response.data;
+      login(token, user); // Update context and localStorage
+
       notifySuccess("Registration successful!");
-      navigate('/login');
+      navigate('/auth');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
