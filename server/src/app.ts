@@ -1,11 +1,15 @@
 import express from 'express';
 import authRoutes from './routes/auth.route.js';
+import cors from 'cors';
 
 const app = express();
 
 // parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// cors
+app.use(cors({ origin: "http://localhost:5173" }));
 
 // mount API routes
 app.use('/api/auth', authRoutes);
