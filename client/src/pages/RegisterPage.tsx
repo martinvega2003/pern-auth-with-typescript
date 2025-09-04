@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
 import { registerSchema } from '../schemas/auth.schemas';
 import api from '../api/api';
+import axios from 'axios';
+import { notifySuccess, notifyError } from '../utils/toast';
 
 const RegisterPage: React.FC = () => {
 
@@ -58,11 +60,21 @@ const RegisterPage: React.FC = () => {
         password: '',
         confirmPassword: '',
       });
+      notifySuccess("Registration successful!");
       navigate('/login');
     } catch (error) {
-      error instanceof Error
-        ? alert(error.message)
-        : alert("An unexpected error occurred");
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          const backendError: string = error.response.data?.error || "Unexpected server error";
+          notifyError(backendError);
+        } else if (error.request) {
+          notifyError("No response from server. Please try again.");
+        } else {
+          notifyError(error.message);
+        }
+      } else {
+        notifyError("An unexpected error occurred");
+      }
       console.error("Registration error:", error);
     }
   }
