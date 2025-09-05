@@ -21,8 +21,12 @@ interface AuthContextType {
 // Create the context
 const AuthContext = createContext<AuthContextType | null>(null);
 
+interface ContextType {
+  children: ReactNode;
+}
+
 // Create a provider component
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider: React.FC<ContextType> = ({ children }: { children: ReactNode }) => {
 
   // State to hold user and token
   const [user, setUser] = useState<User | null>(null);
