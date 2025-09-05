@@ -29,15 +29,6 @@ function App() {
           <Routes>
 
             {/* Initial And Auth Related Public Pages */ }
-
-            {/*<PublicRoute>
-              <Routes>
-                <Route path='/' element={<InitialPage />} />
-                <Route path='/register' element={<RegisterPage />} />
-                <Route path='/login' element={<LoginPage />} />
-              </Routes>
-            </PublicRoute> */}
-
             <Route
               path="/"
               element={
