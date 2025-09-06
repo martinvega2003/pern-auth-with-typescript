@@ -15,7 +15,7 @@ const InitialPage: React.FC = () => {
         text-center sm:border sm:border-gray-300 sm:dark:border-gray-700'
       >
         <h1 className='text-xl sm:text-2xl lg:text-4xl font-bold mb-4 text-gray-800 dark:text-gray-200'>
-          Welcome to the MERN Auth App!
+          Welcome to the PERN Auth App!
         </h1>
         <p className='text-sm sm:text-md md:text-lg mb-12 text-gray-600 dark:text-gray-400'>
           Create an Account or Login if you have one
