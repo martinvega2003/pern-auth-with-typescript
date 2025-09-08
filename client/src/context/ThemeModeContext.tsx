@@ -37,7 +37,7 @@ export const ThemeProvider: React.FC<ContextType> = ({ children }: { children: R
     // Remove transition class after it finishes
     window.setTimeout(() => {
       document.documentElement.classList.remove("theme-transition");
-    }, 500); // matches transition duration
+    }, 200); // matches transition duration
   };
 
   return (
