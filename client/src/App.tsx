@@ -9,6 +9,7 @@ import { AuthProvider } from './context/AuthContext'
 
 // Pages and Components
 import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar';
 import InitialPage from './pages/InitialPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
@@ -26,6 +27,7 @@ function App() {
         <BrowserRouter>
           <ToastContainer position="top-right" autoClose={3000} />
           <Navbar />
+          <Sidebar />
           <Routes>
 
             {/* Initial And Auth Related Public Pages */ }

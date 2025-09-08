@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
+import CustomMessage from '../components/CustomMessage';
 import { registerSchema } from '../schemas/auth.schemas';
 import api from '../api/api';
 import axios from 'axios';
-import { notifySuccess, notifyError } from '../utils/toast';
+import { notifySuccess } from '../utils/toast';
 import { useAuth } from '../context/AuthContext';
 
 const RegisterPage: React.FC = () => {
@@ -25,6 +26,7 @@ const RegisterPage: React.FC = () => {
 
   type RegisterErrors = Partial<Record<keyof RegisterData, string>>
   const [errors, setErrors] = useState<RegisterErrors>({});
+  const [registerError, setRegisterError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -75,15 +77,16 @@ const RegisterPage: React.FC = () => {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           const backendError: string = error.response.data?.error || "Unexpected server error";
-          notifyError(backendError);
+          setRegisterError(backendError);
         } else if (error.request) {
-          notifyError("No response from server. Please try again.");
+          setRegisterError("No response from server. Please try again.");
         } else {
-          notifyError(error.message);
+          setRegisterError(error.message);
         }
       } else {
-        notifyError("An unexpected error occurred");
+        setRegisterError("An unexpected error occurred");
       }
+      setTimeout(() => setRegisterError(null), 5000); // Clear error after 5 seconds
       console.error("Registration error:", error);
     }
   }
@@ -97,7 +100,7 @@ const RegisterPage: React.FC = () => {
         text-center sm:border sm:border-gray-300 sm:dark:border-gray-700'
       >
         <h1 className='text-xl sm:text-2xl lg:text-4xl font-bold mb-4 text-gray-800 dark:text-gray-200'>
-          Welcome to the MERN Auth App!
+          Welcome to the PERN Auth App!
         </h1>
 
         <p className='text-sm sm:text-md md:text-lg mb-6 text-gray-600 dark:text-gray-400'>
@@ -147,6 +150,8 @@ const RegisterPage: React.FC = () => {
         />
 
         {errors.username || errors.email || errors.password ? null : errors.confirmPassword ? <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.confirmPassword}</p> : null}
+
+        {registerError && <CustomMessage type="error" text={registerError} className='w-full' />}
 
         <Button 
           onClick={handleSubmit} 
