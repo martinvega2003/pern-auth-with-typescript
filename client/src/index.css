@@ -9,7 +9,7 @@
 
 /* Apply transitions only during theme switch */
 html.theme-transition * {
-  transition: background-color 0.5s, color 0.5s, border-color 0.5s !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s !important;
 }
 
 /* Prevent child duplication */
