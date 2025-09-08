@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button';
+import CustomMessage from '../components/CustomMessage';
 import { loginSchema } from '../schemas/auth.schemas';
 import api from '../api/api';
 import axios from 'axios';
-import { notifySuccess, notifyError } from '../utils/toast';
+import { notifySuccess } from '../utils/toast';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage: React.FC = () => {
@@ -21,6 +22,7 @@ const LoginPage: React.FC = () => {
 
   type LoginErrors = Partial<Record<keyof LoginData, string>>
   const [errors, setErrors] = useState<LoginErrors>({});
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -69,15 +71,16 @@ const LoginPage: React.FC = () => {
         // if backend sent a response (e.g., 400 or 401)
         if (error.response) {
           const backendError: string = error.response.data?.error || "Unexpected server error";
-          notifyError(backendError); // using react-toastify
+          setLoginError(backendError); // using react-toastify
         } else if (error.request) {
-          notifyError("No response from server. Please try again.");
+          setLoginError("No response from server. Please try again.");
         } else {
-          notifyError(error.message);
+          setLoginError(error.message);
         }
       } else {
-        notifyError("An unexpected error occurred");
+        setLoginError("An unexpected error occurred");
       }
+      setTimeout(() => setLoginError(null), 5000); // Clear error after 5 seconds
       console.error("Login error:", error);
     }
   }
@@ -119,6 +122,8 @@ const LoginPage: React.FC = () => {
         />
 
         {errors.email ? null : errors.password ? <p className="text-sm text-red-500 mb-4 ml-4 sm:ml-8">{errors.password}</p> : null}
+
+        {loginError && <CustomMessage type="error" text={loginError} className='w-full' />}
 
         <Button 
           onClick={handleSubmit} 
