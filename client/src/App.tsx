@@ -13,7 +13,7 @@ import Sidebar from './components/Sidebar';
 import InitialPage from './pages/InitialPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
-import Auth from './pages/Auth';
+import Home from './pages/Home';
 
 // Routes
 import ProtectedRoute from './components/ProtectedRoute';
@@ -25,9 +25,6 @@ function App() {
     <AuthProvider>
       <ThemeProvider>
         <BrowserRouter>
-          <ToastContainer position="top-right" autoClose={3000} />
-          <Navbar />
-          <Sidebar />
           <Routes>
 
             {/* Initial And Auth Related Public Pages */ }
@@ -60,14 +57,17 @@ function App() {
 
             {/* Protected Routes */ }
             <Route
-              path="/auth"
+              path="/home"
               element={
                 <ProtectedRoute>
-                  <Auth />
+                  <Home />
                 </ProtectedRoute>
               }
             />
           </Routes>
+          <ToastContainer position="top-right" autoClose={3000} />
+          <Navbar />
+          <Sidebar />
         </BrowserRouter>
       </ ThemeProvider>
     </AuthProvider>
